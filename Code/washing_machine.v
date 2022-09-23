@@ -138,6 +138,20 @@ always @(posedge clk, negedge rst_n) begin
                 if(timer_count == timer_ticks) 
                 begin
                     timer_count <= 32'd0;
+
+                    //  checks again if the user still requires a double wash  
+                    if(double_wash)
+                    begin
+                        double_wash_begin <= 1'b1;
+                        double_wash_done  <= 1'b0;
+                    end
+                    else
+                    begin
+                        //  skipps the double wash operation
+                        double_wash_begin <= 1'b0;
+                        double_wash_done  <= 1'b1;
+                    end
+
                     if(double_wash_done)
                     begin
                         next_state  <= SPINNING;
